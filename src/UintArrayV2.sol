@@ -39,7 +39,7 @@ contract UintArrayV2 is ArrayInterface {
     /// @return length of array
     function length() public view returns (uint8) {
         uint256 uintArr_ = uintArr;
-        return uint8((uintArr_ >> ((((32 - 1) - 0) * 2) << 2)) & 0xFF) - 0x10;
+        return uint8((uintArr_ >> (((32 - 1) * 2) << 2)) & 0xFF) - 0x10;
     }
 
     /// @dev retrieve a value at an index via bitshift operations
