@@ -1,46 +1,59 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.8.11;
 
-interface INormalArray {
-    function getArr() external view returns(uint8[] memory);
-    function val(uint256 index) external view returns (uint256);
-    function push(uint8 value) external;
-    function pop() external returns (uint8 value);
-    function length() external view returns (uint256);
-    function set(uint256 targetIdx, uint8 newVal) external;
-    function remove(uint256 index) external;
-}
+import './ArrayInterface.sol';
 
 
+/// @notice "normal" array implementation used as base case for comparison
+/// @dev light wrapper around uint8[] array
 /// @author Adapted by @devtooligan from https://solidity-by-example.org/array/
-contract NormalArray is INormalArray {
+contract NormalArray is ArrayInterface {
+
+    /* Storage
+    *********************************************************************************************/
+
     uint8[] public arr;
+
+    /* Main functions
+    *********************************************************************************************/
 
     function getArr() public view returns(uint8[] memory) {
         return arr;
     }
-    function val(uint256 index) public view returns(uint256) {
+
+    /// @return length of array
+    function length() public view returns (uint8) {
+        return uint8(arr.length);
+    }
+
+    /// @param index of element to return the value of
+    /// @return value of the specified element
+    function val(uint256 index) public view returns(uint8) {
+        require(index < arr.length, "outtarange");
         return arr[index];
     }
 
+    /// @param value of new element added to the end of the array
     function push(uint8 value) public {
         arr.push(value);
     }
+
+    /// @return value of popped element
     function pop() public returns(uint8 value) {
-        value = arr[arr.length];
+        require(arr.length != 0, "no can");
+        value = arr[arr.length - 1];
         arr.pop();
     }
 
-    function length() public view returns (uint256) {
-        return arr.length;
-    }
-
+    /// @dev delete element and replace it with a popped element
+    /// @param index of element to remove
     function remove(uint256 index) public {
         arr[index] = pop();
     }
+
+    /// @param index to update
+    /// @param value is the new value being set
     function set(uint256 index, uint8 value) public {
-        require(value != 0xff, 'no can');
         arr[index] = value;
     }
-
 }

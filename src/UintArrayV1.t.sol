@@ -3,22 +3,20 @@ pragma solidity ^0.8.11;
 
 import "ds-test/test.sol";
 
-import "./NormalArray.sol";
+import "./UintArrayV1.sol";
 
-
-contract NormalArrayTest is DSTest {
-    NormalArray arr;
-    NormalArray arr30;
+contract UintArrayV1Test is DSTest {
+    UintArrayV1 arr;
+    UintArrayV1 arr30;
 
     function setUp() public {
-        arr = new NormalArray();
+        arr = new UintArrayV1();
         arr.push(uint8(0xff));
-        arr30 = new NormalArray();
+        arr30 = new UintArrayV1();
         arr30.push(uint8(0xff));
         for (uint256 index = 1; index < 31; ++index) {
             arr30.push(uint8(index));
         }
-
     }
 
     function testLength() public {
@@ -43,7 +41,6 @@ contract NormalArrayTest is DSTest {
         assertEq(arr.length(), 1);
         assertEq(arr.pop(), uint8(0xff));
     }
-
     function testRead31() public view returns (uint256 sum) {
         for (uint256 index = 0; index < 31; ++index) {
             sum = sum + arr30.val(index);
